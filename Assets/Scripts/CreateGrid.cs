@@ -225,8 +225,6 @@ public class CreateGrid : MonoBehaviour
                     GameObject node = (GameObject)Instantiate(nodePrefab, worldPosition, Quaternion.Euler(0, 0, 0));
                     Vector3Int cellPosition = floor.WorldToCell(worldPosition);
                     WorldTile wt = node.GetComponent<WorldTile>();
-                    print(node);
-                    print(wt);
                     wt.gridX = gridX;
                     wt.gridY = gridY;
                     wt.cellX = cellPosition.x;
