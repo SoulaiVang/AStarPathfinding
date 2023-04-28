@@ -18,12 +18,21 @@ public class AStar : MonoBehaviour
     private List<GameObject> unsortedNodes = new List<GameObject>();   // all the nodes in the world
     public GameObject[,] nodes;           // sorted 2d array of nodes, may contain null entries if the map is of an odd shape e.g. gaps
     private int gridBoundX = 0, gridBoundY = 0;
+    private Vector3 currPosition, targetPosition;
 
     void Start()
     {
         gridSizeX = Mathf.Abs(scanStartX) + Mathf.Abs(scanFinishX);
         gridSizeY = Mathf.Abs(scanStartY) + Mathf.Abs(scanFinishY);
         createGrid();
+    }
+
+    void Update()
+    {
+        currPosition = transform.position;
+        targetPosition = GameObject.Find("MovePoint").transform.position;
+
+        FindPath(currPosition, targetPosition);
     }
 
     public List<WorldTile> getNeighbours(int x, int y, int width, int height)
