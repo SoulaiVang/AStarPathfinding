@@ -10,6 +10,7 @@ public class Movement : MonoBehaviour
     List<WorldTile> path;
     List<WorldTile> reachedPathTiles = new List<WorldTile>(); 
     public Transform movePoint;
+    public GameObject enemy;
 
 
     // Start is called before the first frame update
@@ -21,6 +22,7 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        path = enemy.GetComponent<AStar>().path;
         MovementPerformed();
     }
 

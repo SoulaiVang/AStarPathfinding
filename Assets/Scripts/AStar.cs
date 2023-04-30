@@ -10,6 +10,7 @@ public class AStar : MonoBehaviour
     public List<Tilemap> obstacleLayers;   // all layers that contain objects to navigate around
     public GameObject gridNode;            // where the generated tiles will be stored
     public GameObject nodePrefab;          // world tile prefab
+    public GameObject targetNode;
 
     //these are the bounds of where we are searching in the world for tiles, have to use world coords to check for tiles in the tile map
     public int scanStartX = -300, scanStartY = -300, scanFinishX = 300, scanFinishY = 300;
@@ -17,6 +18,7 @@ public class AStar : MonoBehaviour
 
     private List<GameObject> unsortedNodes = new List<GameObject>();   // all the nodes in the world
     public GameObject[,] nodes;           // sorted 2d array of nodes, may contain null entries if the map is of an odd shape e.g. gaps
+    public List<WorldTile> path;
     private int gridBoundX = 0, gridBoundY = 0;
     private Vector3 currPosition, targetPosition;
 
@@ -30,7 +32,7 @@ public class AStar : MonoBehaviour
     void Update()
     {
         currPosition = transform.position;
-        targetPosition = GameObject.Find("MovePoint").transform.position;
+        targetPosition = targetNode.transform.position;
 
         FindPath(currPosition, targetPosition);
     }
@@ -327,15 +329,17 @@ public class AStar : MonoBehaviour
 
     List<WorldTile> RetracePath(WorldTile startNode, WorldTile targetNode)
     {
-        List<WorldTile> path = new List<WorldTile>();
+        path = new List<WorldTile>();
         WorldTile currentNode = targetNode;
     
         while(currentNode != startNode) {
+            print("GETTING PATH!");
             path.Add(currentNode);
             currentNode = currentNode.parent;
         }
     
         path.Reverse();
+
         return path;
     }
 
@@ -364,6 +368,7 @@ public class AStar : MonoBehaviour
     
             if (currentNode == targetNode)
             {
+                print("RETRACING PATH:");
                 RetracePath(startNode, targetNode);
                 return;
             }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class UpdateMovePoint : MonoBehaviour
 {
     Vector3 mousePos;
-    Vector3 translatedMousePos;
+    Vector3 worldPos;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,10 +18,10 @@ public class UpdateMovePoint : MonoBehaviour
     if (Input.GetButtonDown("Fire1"))
         {
         mousePos = Input.mousePosition;
-        Debug.Log(mousePos.x);
-        Debug.Log(mousePos.y);
+        worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        worldPos.z = 0;
         }
 
-        transform.position = mousePos;
+        transform.position = worldPos;
     }
 }
