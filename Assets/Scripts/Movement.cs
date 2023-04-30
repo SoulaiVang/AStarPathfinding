@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    Vector3 lastDirection = Vector3.zero;
-    Vector3 movement = Vector3.zero;
+    public Vector3 lastDirection = Vector3.zero;
+    public Vector3 movement = Vector3.zero;
     bool moveDone = false;   
     List<WorldTile> path;
     List<WorldTile> reachedPathTiles = new List<WorldTile>(); 
     public Transform movePoint;
     public GameObject enemy;
+    Rigidbody2D rigidbody;
 
 
     // Start is called before the first frame update
     void Start()
     {
         movePoint.parent = null;
+        rigidbody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -29,6 +31,7 @@ public class Movement : MonoBehaviour
     void MovementPerformed()
     {
         SetMovementVector();
+        rigidbody.velocity = movement;
     }
 
     void SetMovementVector()

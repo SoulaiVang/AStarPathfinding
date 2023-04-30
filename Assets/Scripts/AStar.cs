@@ -19,6 +19,7 @@ public class AStar : MonoBehaviour
     private List<GameObject> unsortedNodes = new List<GameObject>();   // all the nodes in the world
     public GameObject[,] nodes;           // sorted 2d array of nodes, may contain null entries if the map is of an odd shape e.g. gaps
     public List<WorldTile> path;
+    public List<WorldTile> oldPath;
     private int gridBoundX = 0, gridBoundY = 0;
     private Vector3 currPosition, targetPosition;
 
@@ -33,8 +34,10 @@ public class AStar : MonoBehaviour
     {
         currPosition = transform.position;
         targetPosition = targetNode.transform.position;
+        print(nodes);
 
         FindPath(currPosition, targetPosition);
+        highlightPath();
     }
 
     public List<WorldTile> getNeighbours(int x, int y, int width, int height)
@@ -246,6 +249,7 @@ public class AStar : MonoBehaviour
                     {
                         foundTileOnLastPass = true;
                         node.name = "Walkable_" + gridX.ToString() + "_" + gridY.ToString();
+                        wt.walkable = true;
                     }
                     else
                     {
@@ -333,7 +337,6 @@ public class AStar : MonoBehaviour
         WorldTile currentNode = targetNode;
     
         while(currentNode != startNode) {
-            print("GETTING PATH!");
             path.Add(currentNode);
             currentNode = currentNode.parent;
         }
@@ -347,6 +350,8 @@ public class AStar : MonoBehaviour
     {
         WorldTile startNode = GetWorldTileByCellPosition(startPosition);
         WorldTile targetNode = GetWorldTileByCellPosition(endPosition);
+        print("startNode Pos: " + startNode.GetComponent<Transform>().position);
+        print("targetNode Pos: " + targetNode);
     
         List<WorldTile> openSet = new List<WorldTile>();
         HashSet<WorldTile> closedSet = new HashSet<WorldTile>();
@@ -368,7 +373,6 @@ public class AStar : MonoBehaviour
     
             if (currentNode == targetNode)
             {
-                print("RETRACING PATH:");
                 RetracePath(startNode, targetNode);
                 return;
             }
@@ -387,6 +391,19 @@ public class AStar : MonoBehaviour
                         openSet.Add(neighbour);
                 }
             }
+        }
+    }
+
+    void highlightPath()
+    {
+        foreach (GameObject node in nodes) {
+            if (node != null && node.GetComponent<WorldTile>().walkable == true) {
+                node.GetComponent<WorldTile>().GetComponent<SpriteRenderer>().color = Color.green;
+            }
+        }
+
+        foreach (WorldTile node in path) {
+            node.GetComponent<SpriteRenderer>().color = Color.magenta;
         }
     }
 }

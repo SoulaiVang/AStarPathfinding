@@ -15,7 +15,7 @@ public class UpdateMovePoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    if (Input.GetButtonDown("Fire1"))
+    if (Input.GetMouseButton(0))
         {
         mousePos = Input.mousePosition;
         worldPos = Camera.main.ScreenToWorldPoint(mousePos);
